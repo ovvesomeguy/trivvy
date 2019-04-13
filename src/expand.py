@@ -4,22 +4,21 @@
 import sys
 import os
 import json
-from template_engine import webTemplate
-import time
 
-def findLocation():
-    file_path = os.getcwd() # this variable specify where the file is running
-    settings_path = file_path + '/settings.json'
-    if os.path.isfile(settings_path) == False:
-        print('Please create settings file')
-        sys.exit(0)
-    else:
-        patt = webTemplate(file_path)
-        patt.create_elements()
-        print('created')
-        time.sleep(5)
-        patt.remove_all()
+class spread():
+    def __init__(self):
+        pass
 
+    def findLocation(self):
+        self.file_path = os.getcwd() # this variable specify where the file is running
+        self.settings_path = self.file_path + '/settings.json'
+        if os.path.isfile(self.settings_path):
+            return True
+        else:
+            return False
 
-
-findLocation()
+    def parseSettings(self):
+        if self.findLocation():
+            self.jsonArgs = open(self.settings_path , 'r').read()
+            self._jsData = json.loads(self.jsonArgs)
+            return self._jsData

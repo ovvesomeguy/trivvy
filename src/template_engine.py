@@ -27,5 +27,12 @@ class webTemplate():
             os.mknod(self.folder + '/src/script.js')
     
     def remove_all(self):
-        shutil.rmtree(self.folder + '/src')
-        shutil.rmtree(self.folder + '/image')
+        if os.path.exists(self.folder + '/src'):
+            shutil.rmtree(self.folder + '/src')
+        if os.path.exists(self.folder + '/src'):
+            shutil.rmtree(self.folder + '/src')
+            
+
+# TODO
+class pythonTemplate(): 
+    pass
