@@ -7,18 +7,23 @@ import json
 
 class spread():
     def __init__(self):
-        pass
-
-    def findLocation(self):
         self.file_path = os.getcwd() # this variable specify where the file is running
         self.settings_path = self.file_path + '/settings.json'
-        if os.path.isfile(self.settings_path):
-            return True
-        else:
-            return False
+    
+    def createSettings(self):
+        if os.path.exists(self.settings_path):
+            pass
+        else:            
+            os.mknod(self.settings_path)
+            with open(self.settings_path, 'w') as file:
+                file.write('{\n    "path": "."\n}')
 
     def parseSettings(self):
-        if self.findLocation():
-            self.jsonArgs = open(self.settings_path , 'r').read()
-            self._jsData = json.loads(self.jsonArgs)
-            return self._jsData
+        self.jsonArgs = open(self.settings_path , 'r').read()
+        if not 'path' in self.jsonArgs:
+            print('The settings file is not valid, please read the docs')
+            sys.exit(0)
+        self._jsData = json.loads(self.jsonArgs)
+        return self._jsData
+
+spread().parseSettings()
