@@ -16,7 +16,8 @@ class webTemplate():
     def __init__(self , args):
         self.folder = args['path']
         init(autoreset=True)
-    def create_elements(self):
+
+    def createElements(self):
         # create folders
         if os.path.exists(self.folder + '/image') == False:
             os.mkdir(self.folder+'/image') 
@@ -32,7 +33,7 @@ class webTemplate():
             os.mknod(self.folder + '/src/script.js')
         if True:
             print(Fore.GREEN + 'Your app was sucsesfull create')
-    def remove_all(self):
+    def removeAll(self):
         if os.path.exists(self.folder + '/src'):
             shutil.rmtree(self.folder + '/src')
         if os.path.exists(self.folder + '/image'):
@@ -40,6 +41,23 @@ class webTemplate():
         if True:
             print(Fore.YELLOW + 'The project was sucsesfull deleted')
 
-# TODO
-class pythonTemplate(): 
-    pass
+
+class pythonTemplate():
+    def __init__(self , args):
+        self.args = args
+        self.folder = self.args['path']
+
+    def createElements(self):
+        # create folders
+        if os.path.exists(self.folder + '/src') == False:
+            os.mkdir(self.folder + '/src') 
+        # create files
+        if os.path.isfile(self.folder + '/src/__init__.py') == False: 
+            os.mknod(self.folder + '/src/__init__.py')
+        if os.path.isfile(self.folder + '/src/__main__.py') == False: 
+            os.mknod(self.folder + '/src/__main__.py')
+        if os.path.isfile(self.folder + 'REAMDE.md') == False: 
+            os.mknod(self.folder + 'README.md')
+    def removeAll(self):
+        if os.path.exists(self.folder + '/src'):
+            shutil.rmtree(self.folder + '/src')

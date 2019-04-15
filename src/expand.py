@@ -17,6 +17,8 @@ class spread():
             os.mknod(self.settings_path)
             with open(self.settings_path, 'w') as file:
                 file.write('{\n    "path": "."\n}')
+            print('Settings was created')
+            sys.exit(0)
 
     def parseSettings(self):
         self.jsonArgs = open(self.settings_path , 'r').read()
@@ -25,5 +27,3 @@ class spread():
             sys.exit(0)
         self._jsData = json.loads(self.jsonArgs)
         return self._jsData
-
-spread().parseSettings()
