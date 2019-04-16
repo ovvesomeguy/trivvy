@@ -21,7 +21,7 @@ class spread():
     def parseSettings(self):
         self.jsonArgs = open(self.settings_path , 'r').read()
         if not 'path' in self.jsonArgs:
-            print('The settings file is not valid, please read the docs')
+            print('\033[31m' , 'The settings file is not valid, please read the docs')
             sys.exit(0)
         self._jsData = json.loads(self.jsonArgs)
         return self._jsData

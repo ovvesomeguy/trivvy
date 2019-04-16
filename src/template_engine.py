@@ -32,9 +32,13 @@ class templateExpander():
     
     def removeAll(self):
         for folder in self.foldersInDir:
-            if os.path.isdir(folder):
-                shutil.rmtree(folder)
-        print('Deleting complete')
+            if folder != 'settings.json':
+                if os.path.isdir(folder):
+                    shutil.rmtree(folder)
+                else:
+                    os.remove(folder)
+        
+        print('\033[32m' , 'Deleting was sucessful complete')
 
 
 class webTemplate():
@@ -58,6 +62,7 @@ class webTemplate():
         if os.path.isfile(self.homeFolder + '/src/script.js') == False:
             os.mknod(self.homeFolder + '/src/script.js')
 
+        print('\033[32m' , 'Creating was succssesful complete')
 
 class pyTemplate():
     def __init__(self , path):
@@ -74,4 +79,5 @@ class pyTemplate():
             os.mknod(self.homeFolder + '/src/__main__.py')
         if os.path.isfile(self.homeFolder + '/README.md') == False:
             os.mknod(self.homeFolder + '/README.md')
-            print('создано')
+
+        print('\033[32m' , 'Creating was succssesful complete')
