@@ -8,11 +8,14 @@ import os
 def main():
         args = argumentParser().parseIt() # args of command line
         settings = spread().parseSettings() # the settings from json file
-        z = templateExpander(settings) # this must be main class entry
+        mainClass = templateExpander(settings) # this must be main class entry
         
         if args.action == 'start':
-                z.understandSettings()
+                mainClass.understandSettings()
+        
         elif args.action == 'delete':
-                z.removeAll()
+                mainClass.removeAll()
+        else:
+                print('\033[33m' , 'The argument is not valid')
 if __name__ == "__main__":
     main()
