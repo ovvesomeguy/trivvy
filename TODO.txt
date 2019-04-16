@@ -1,2 +1,4 @@
 1. Make the specification of json file:
-    NAME: 
+    NAME: -
+2. Some cool featured:
+    pretty print without colorama

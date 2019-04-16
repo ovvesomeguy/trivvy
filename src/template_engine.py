@@ -6,6 +6,7 @@ import os
 import shutil
 
 class templateExpander():
+
     def __init__(self , args):
         self.args = args
         self.path = self.args['path']
@@ -24,6 +25,10 @@ class templateExpander():
         if self.template == 'web':
             self.mainClass = webTemplate(self.path)
             self.mainClass.createElements()
+
+        elif self.template == 'python':
+            self.mainClass = pyTemplate(self.path)
+            self.mainClass.createElements()
     
     def removeAll(self):
         for folder in self.foldersInDir:
@@ -33,10 +38,11 @@ class templateExpander():
 
 
 class webTemplate():
+    
     def __init__(self , path):
         self.path = path
         self.homeFolder = os.getcwd()
-        self.folders = [self.homeFolder + '/src' , self.homeFolder + '/image']
+
     def createElements(self):
         # the folders
         if os.path.exists(self.homeFolder + '/image') == False:
@@ -51,3 +57,21 @@ class webTemplate():
             os.mknod(self.homeFolder + '/src/style.css')
         if os.path.isfile(self.homeFolder + '/src/script.js') == False:
             os.mknod(self.homeFolder + '/src/script.js')
+
+
+class pyTemplate():
+    def __init__(self , path):
+        self.path = path
+        self.homeFolder = os.getcwd()
+    
+    def createElements(self):
+        if os.path.exists(self.homeFolder + 'src') == False:
+            os.mkdir(self.homeFolder + '/src')
+
+        if os.path.isfile(self.homeFolder + '/src/__init__.py') == False:
+            os.mknod(self.homeFolder + '/src/__init__.py')
+        if os.path.isfile(self.homeFolder + '/src/__main__.py') == False:
+            os.mknod(self.homeFolder + '/src/__main__.py')
+        if os.path.isfile(self.homeFolder + '/README.md') == False:
+            os.mknod(self.homeFolder + '/README.md')
+            print('создано')
