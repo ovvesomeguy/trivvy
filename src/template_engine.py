@@ -44,15 +44,17 @@ class templateExpander():
             self.mainClass.createElements()
     
     def removeAll(self):
-        for folder in self.foldersInDir:
-            if folder != 'settings.json':
-                if os.path.isdir(folder):
-                    shutil.rmtree(folder)
-                else:
-                    os.remove(folder)
+        if len(os.listdir(os.getcwd())) > 1:
+            for folder in self.foldersInDir:
+                if folder != 'settings.json':
+                    if os.path.isdir(folder):
+                        shutil.rmtree(folder)
+                    else:
+                        os.remove(folder)
         
-        print('\033[32m' , 'Deleting was sucessful complete')
-
+            print('\033[32m' + 'Deleting was sucessful complete')
+        else:
+            print('\033[33m' + 'Nothing to delete')
 
 class webTemplate():
     
@@ -64,8 +66,12 @@ class webTemplate():
         # the folders
         if os.path.exists(self.homeFolder + '/image') == False:
             os.mkdir(self.homeFolder + '/image')
-        if os.path.exists(self.homeFolder + 'src') == False:
+        else:
+            pass
+        if os.path.exists(self.homeFolder + '/src') == False:
             os.mkdir(self.homeFolder + '/src')
+        else:
+            pass
 
         # the files create
         if os.path.isfile(self.homeFolder + '/src/index.html') == False:
@@ -74,11 +80,11 @@ class webTemplate():
             os.mknod(self.homeFolder + '/src/style.css')
         if os.path.isfile(self.homeFolder + '/src/script.js') == False:
             os.mknod(self.homeFolder + '/src/script.js')
-        if os.path.isfile(self.homeFolder + 'README.md') == False:
-            os.mknod(self.homeFolder + 'README.md')
+        if os.path.isfile(self.homeFolder + '/README.md') == False:
+            os.mknod(self.homeFolder + '/README.md')
 
         self.prepareFiles()
-        print('\033[32m' , 'Creating was succssesful complete')
+        print('\033[32m' + 'Creating was succssesful complete')
 
 
     def prepareFiles(self):
@@ -94,7 +100,7 @@ class pyTemplate():
         self.homeFolder = os.getcwd()
     
     def createElements(self):
-        if os.path.exists(self.homeFolder + 'src') == False:
+        if os.path.exists(self.homeFolder + '/src') == False:
             os.mkdir(self.homeFolder + '/src')
 
         if os.path.isfile(self.homeFolder + '/src/__init__.py') == False:
@@ -104,4 +110,4 @@ class pyTemplate():
         if os.path.isfile(self.homeFolder + '/README.md') == False:
             os.mknod(self.homeFolder + '/README.md')
 
-        print('\033[32m' , 'Creating was succssesful complete')
+        print('\033[32m' + 'Creating was succssesful complete')

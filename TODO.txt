@@ -1,4 +1,1 @@
-1. Make the specification of json file:
-    NAME: -
-2. Some cool featured:
-    pretty print without colorama
+1. CREATE REMOVING FUNCTION
