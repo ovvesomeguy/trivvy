@@ -1,27 +1,15 @@
-#!/usr/bin/python3.6
-import expand
-from argument_parser import argumentParser
-from template_engine import templateExpander
-from tuberegister import mainTube
-import os
-import time
+"""
+        The main entry point. This file 
+"""
 
-# the entry point
+import sys
+
 def main():
-        expand.createSettings()
-        args = argumentParser().parseIt() # args of command line
-        settings = expand.parseSettings() # the settings from json file
-        mainClass = templateExpander(settings) # this must be main class entry
-        
-        tube = mainTube()
-        if args.action == 'start':
-                mainClass.understandSettings()
-                tube.addNewItem([settings['name'] , str(time.strftime('%c')) ,settings['author']])
-                print('\033[32m' + 'The project added to trivvy database')
+        try:
+                from entry import main
+                sys.exit(main())
+        except KeyboardInterrupt:
+                sys.exit(0)
 
-        elif args.action == 'delete':
-                mainClass.removeAll()
-        else:
-                print('\033[33m' + 'The argument is not valid')
 if __name__ == "__main__":
-    main()
+        main()

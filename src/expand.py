@@ -24,9 +24,12 @@ def printWarning():
     sys.exit(0)
 
 def parseSettings():
-    _jsonArgs = open(SETTINGS_PATH , 'r').read()
-    _jsData = json.loads(_jsonArgs)
-    if not 'author' in _jsData or not 'name' in _jsData or not 'path' in _jsData or not 'template' in _jsData:
-        printWarning()
+    if os.path.exists(SETTINGS_PATH):
+        _jsonArgs = open(SETTINGS_PATH , 'r').read()
+        _jsData = json.loads(_jsonArgs)
+        if not 'author' in _jsData or not 'name' in _jsData or not 'path' in _jsData or not 'template' in _jsData:
+            printWarning()
 
-    return _jsData
+        return _jsData
+    else:
+        createSettings()

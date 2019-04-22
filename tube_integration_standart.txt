@@ -1,0 +1,4 @@
+1. if integrate equal true in settings.json than trivvy will create a local 'local-trivvy' folder.
+This folder contain all configuration of expanded project:
+    - the settings.json file copy
+    - the id of project in database

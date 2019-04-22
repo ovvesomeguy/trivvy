@@ -13,36 +13,19 @@ import sqlite3
 class mainTube():
     def __init__(self):
         self.home = os.path.expanduser('~')
-
+    
     # if folder exists just return True
     # if act was given than create a folder and return True
     # else just return False
-    def prepareFolder(self , act=False):
-        self.folderExist = False 
-        
-        if os.path.exists(self.home + '/.trivvy/'):
-            self.folderExist = True            
-        else:
-            if act is True:
-                os.mkdir(self.home + '/.trivvy/')
-                self.folderExist = True
-            else:
-                self.folderExist = False
-
     def _initializeDb(self):
-        self.prepareFolder()
-        if self.folderExist == True:
-            self.dbFile = self.home + '/.trivvy/' + 'projects.db'
-            self.conn = sqlite3.connect(self.dbFile)
-            self.cursor = self.conn.cursor()
-            
-            if os.stat(self.dbFile).st_size == 0:
-                self.cursor.execute("""CREATE TABLE projects
-                                    (name text , init_date text, temlate text)
-                """)
-        else:
-            self.prepareFolder(act=True)
+        self.dbFile = self.home + '/.trivvy/' + 'projects.db'
+        self.conn = sqlite3.connect(self.dbFile)
+        self.cursor = self.conn.cursor()
         
+        if os.stat(self.dbFile).st_size == 0:
+            self.cursor.execute("""CREATE TABLE projects
+                                (name text , init_date text, temlate text , id text)
+            """)
 
     def returnAllProjects(self): # perfectly work but if one of parameters not exists?
         self._initializeDb()
@@ -59,7 +42,10 @@ class mainTube():
     def addNewItem(self , args):
         self._initializeDb()
         self.query = """
-            INSERT INTO projects VALUES (? , ? , ?)
+            INSERT INTO projects VALUES (? , ? , ? ,?)
         """
         self.cursor.execute(self.query , args)
         self.conn.commit()
+
+    def removeItem(self):
+        pass
