@@ -3,6 +3,9 @@ from shutil import copyfile
 from tuberegister import mainTube
 
 
+# Thiis script prepare the project to start with making the local and global trivvy folder
+# and if the project database does not exists than make it
+
 LOCAL_TRIVVY_FOLDER = os.getcwd() + '/.local_trivvy/'
 SETINGS_ADDR = os.getcwd() + '/settings.json'
 GLOBAL_TRIVVY_FOLDER = os.path.expanduser('~') + '/.trivvy/'

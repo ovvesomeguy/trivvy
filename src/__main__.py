@@ -1,5 +1,5 @@
 """
-        The main entry point. This file 
+        The main entry point.
 """
 
 import sys

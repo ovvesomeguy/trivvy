@@ -1,6 +1,6 @@
 import argument_parser
 import controler
-import expand
+import extend
 import template_engine
 from tuberegister import mainTube
 
@@ -9,18 +9,18 @@ from uuid import uuid4
 
 def main():
     controler.prepareForStart()
-    jsSettings = expand.parseSettings()
     consoleArgs = argument_parser.argumentParser().parseIt()
-    engine = template_engine.templateExpander(jsSettings)
 
     tube = mainTube()
     if consoleArgs.action == 'start':
+        jsSettings = extend.parseSettings()
+        engine = template_engine.templateExpander(jsSettings)
         engine.understandSettings()
-        mainTube().addNewItem([jsSettings['name'] , time.strftime('%c') , jsSettings['template'] ,str(uuid4())])
-        if jsSettings['integrate']:
-            if jsSettings['integrate'] == 'true':
-                tube.returnAllProjects()
+        # mainTube().addNewItem([jsSettings['name'] , time.strftime('%c') , jsSettings['template'] ,str(uuid4())])
     elif consoleArgs.action == 'delete':
-        engine.removeAll()
+        template_engine.removeAll()
     else:
         print('\033[33m' + 'The argument is not valid')
+
+if __name__ == "__main__":
+    main()
