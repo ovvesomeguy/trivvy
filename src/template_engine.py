@@ -87,7 +87,6 @@ class webTemplate():
             os.mknod(self.homeFolder + '/README.md')
 
         self.prepareFiles()
-        print('\033[32m' + 'Creating was succssesful complete')
 
 
     def prepareFiles(self):
@@ -112,5 +111,3 @@ class pyTemplate():
             os.mknod(self.homeFolder + '/src/__main__.py')
         if os.path.isfile(self.homeFolder + '/README.md') == False:
             os.mknod(self.homeFolder + '/README.md')
-
-        print('\033[32m' + 'Creating was succssesful complete')

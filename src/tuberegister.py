@@ -10,37 +10,6 @@ import sys
 import sqlite3
 
 
-# HOME_PREFIX = os.path.expanduser('~')
-# DB_FILE_NAME = 'projects.db'
-
-# def _initializeDb():
-#     dbFile = HOME_PREFIX + '/.trivvy/' + DB_FILE_NAME
-#     conn = sqlite3.connect(dbFile)
-#     cursor = conn.cursor()
-#     if os.stat(dbFile).st_size == 0:
-#         cursor.execute("""CREATE TABLE projects
-#                           (name text , init_date text , template text , project_id text) 
-#         """)
-    
-#     return cursor
-
-# def returnAllProjects():
-#     newCursor = _initializeDb()
-#     result = []
-#     consoleOutput = newCursor.execute("""SELECT * FROM projects""").fetchall()
-
-#     for i in consoleOutput:
-#         _jsSerial = {'project_name':i[0] , 'init_date':i[1] , 'template':i[2] , 'project_id':i[3]}
-#         result.append(_jsSerial)
-
-#     return result
-
-# def addNewItem(data):
-#     newCursor = _initializeDb()
-#     query = """INSERT INTO projects VALUES (? , ? , ? ,?)"""
-#     newCursor.execute(query , data)
-#     conn.commit()
-
 class mainTube():
     def __init__(self):
         self.home = os.path.expanduser('~')
@@ -78,5 +47,9 @@ class mainTube():
         self.cursor.execute(self.query , args)
         self.conn.commit()
 
-    def removeItem(self):
-        pass
+    def removeItem(self , project):
+        self._initializeDb()
+
+        self.delete_query = """DELETE FROM projects WHERE id='{0}'""".format(project)
+        self.cursor.execute(self.delete_query)
+        self.conn.commit()

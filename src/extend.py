@@ -53,8 +53,6 @@ def parseSettings():
             printWarning('path')
         if not 'template' in _jsData:
             printWarning('template')
-
-        print('this is fine')
         return _jsData
     
     else:
