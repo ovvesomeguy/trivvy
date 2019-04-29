@@ -10,24 +10,29 @@ htmlStruct = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="shortcut icon" href="some.ico" type="image/x-icon">
+    <link href="style.css"></link>
     <title>Document</title>
 </head>
 <body>
     
+<script src="script.js"></script>
 </body>
 </html>
 """
 
 
-def removeAll():
+def removeAll(remove_settings=False):
     foldersInDir = os.listdir(os.getcwd())
     if len(os.listdir(os.getcwd())) > 1:
         for folder in foldersInDir:
-            if folder != 'settings.json':
-                if os.path.isdir(folder):
-                    shutil.rmtree(folder)
-                else:
-                    os.remove(folder)
+            if remove_settings == False:
+                if folder != 'settings.json':
+                    if os.path.isdir(folder):
+                        shutil.rmtree(folder)
+                    else:
+                        os.remove(folder)
+            else:
+                os.remove('settings.json')
     
         print('\033[32m' + 'Deleting was sucessful complete')
     else:
@@ -35,7 +40,6 @@ def removeAll():
 
 
 class templateExpander():
-
     def __init__(self , args):
         self.args = args
         self.path = self.args['path']
@@ -60,32 +64,24 @@ class templateExpander():
     
 
 class webTemplate():
-    
     def __init__(self , path):
         self.path = path
-        self.homeFolder = os.getcwd()
+        self.homeFolder = os.getcwd() + '/'
 
     def createElements(self):
-        # the folders
-        if os.path.exists(self.homeFolder + '/image') == False:
-            os.mkdir(self.homeFolder + '/image')
-        else:
-            pass
-        if os.path.exists(self.homeFolder + '/src') == False:
-            os.mkdir(self.homeFolder + '/src')
-        else:
-            pass
+        self.folders = ['images' , 'src']
+        self.files = ['src/index.html' , 'src/style.css' , 'src/script.js' , 'README.md']
 
-        # the files create
-        if os.path.isfile(self.homeFolder + '/src/index.html') == False:
-            os.mknod(self.homeFolder + '/src/index.html')
-        if os.path.isfile(self.homeFolder + '/src/style.css') == False:
-            os.mknod(self.homeFolder + '/src/style.css')
-        if os.path.isfile(self.homeFolder + '/src/script.js') == False:
-            os.mknod(self.homeFolder + '/src/script.js')
-        if os.path.isfile(self.homeFolder + '/README.md') == False:
-            os.mknod(self.homeFolder + '/README.md')
-
+        # create folders
+        for folder in self.folders:
+            if os.path.exists(self.homeFolder + folder) is False:
+                os.mkdir(self.homeFolder + folder)
+        
+        # create files
+        for file in self.files:
+            if os.path.isfile(self.homeFolder + file) is False:
+                os.mknod(self.homeFolder + file)
+        
         self.prepareFiles()
 
 
@@ -99,15 +95,15 @@ class webTemplate():
 class pyTemplate():
     def __init__(self , path):
         self.path = path
-        self.homeFolder = os.getcwd()
+        self.homeFolder = os.getcwd() + '/'
     
     def createElements(self):
-        if os.path.exists(self.homeFolder + '/src') == False:
-            os.mkdir(self.homeFolder + '/src')
+        self.folders = ['src/']
+        self.files = ['src/__init__.py' , 'src/__main__.py' , 'README.md']
+        for folder in self.folders:
+            if os.path.exists(self.homeFolder + folder) == False:
+                os.mkdir(self.homeFolder + folder)
 
-        if os.path.isfile(self.homeFolder + '/src/__init__.py') == False:
-            os.mknod(self.homeFolder + '/src/__init__.py')
-        if os.path.isfile(self.homeFolder + '/src/__main__.py') == False:
-            os.mknod(self.homeFolder + '/src/__main__.py')
-        if os.path.isfile(self.homeFolder + '/README.md') == False:
-            os.mknod(self.homeFolder + '/README.md')
+        for file in self.files:
+            if os.path.isfile(self.homeFolder + file) == False:
+                os.mknod(self.homeFolder + file)

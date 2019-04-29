@@ -2,7 +2,7 @@ import argument_parser
 import controler
 import extend
 import template_engine
-from tuberegister import mainTube
+from trivvy.src.tuberegister import mainTube
 
 import time
 from uuid import uuid4
