@@ -2,17 +2,18 @@ import argument_parser
 import controler
 import extend
 import template_engine
-from trivvy.src.tuberegister import mainTube
+from trivvy.src.integrate.tuberegister import mainTube
 
 import time
 from uuid import uuid4
+import logger
 
 def main():
 
     controler.prepareForStart()
     consoleArgs = argument_parser.argumentParser().parseIt()
     projecId = uuid4()
-
+    logger.logg()
     if consoleArgs.action == 'start':
         jsSettings = extend.parseSettings()
         engine = template_engine.templateExpander(jsSettings)

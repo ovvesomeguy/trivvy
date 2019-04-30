@@ -1,25 +1,70 @@
 import os
 from shutil import copyfile
-from trivvy.src.tuberegister import mainTube
+from trivvy.src.integrate.tuberegister import mainTube
 # This script prepare the project to start with making the local and global trivvy folder
 # and if the project database does not exists than make it
 
+logger_struct = """[loggers]
+keys=root,exampleApp
+ 
+[handlers]
+keys=fileHandler, consoleHandler
+ 
+[formatters]
+keys=myFormatter
+ 
+[logger_root]
+level=CRITICAL
+handlers=consoleHandler
+ 
+[logger_exampleApp]
+level=INFO
+handlers=fileHandler
+qualname=exampleApp
+ 
+[handler_consoleHandler]
+class=StreamHandler
+level=DEBUG
+formatter=myFormatter
+args=(sys.stdout,)
+ 
+[handler_fileHandler]
+class=FileHandler
+formatter=myFormatter
+args=("config.log",)
+ 
+[formatter_myFormatter]
+format=%(asctime)s - %(name)s - %(levelname)s - %(message)s
+datefmt="""
+
 LOCAL_TRIVVY_FOLDER = os.getcwd() + '/.local_trivvy/'
-SETINGS_ADDR = os.getcwd() + '/settings.json'
 GLOBAL_TRIVVY_FOLDER = os.path.expanduser('~') + '/.trivvy/'
+LOGGER_FOLDER = GLOBAL_TRIVVY_FOLDER + 'logger/'
+
+
+LOGGER_CONFIG = LOGGER_FOLDER + 'logger.conf'
+SETINGS_ADDR = os.getcwd() + '/settings.json'
 PROJECTS_DATABASE_ADDR = GLOBAL_TRIVVY_FOLDER + 'projects.db'
 
-def prepareForStart():
-    if os.path.exists(LOCAL_TRIVVY_FOLDER) == False:
-        os.mkdir(LOCAL_TRIVVY_FOLDER)
+folder_array = [LOCAL_TRIVVY_FOLDER , GLOBAL_TRIVVY_FOLDER , LOGGER_FOLDER]
+files_array = [LOGGER_CONFIG , SETINGS_ADDR , PROJECTS_DATABASE_ADDR]
 
-    if os.path.exists(GLOBAL_TRIVVY_FOLDER) == False:
-        os.mkdir(GLOBAL_TRIVVY_FOLDER)
-    
-    if os.path.exists(PROJECTS_DATABASE_ADDR) == False:
-        os.mknod(PROJECTS_DATABASE_ADDR)
- 
+def prepareForStart():
+    # create the basic folders
+    for folder in folder_array:
+        if os.path.exists(folder) == False:
+            os.mkdir(folder)
+
+    for file in files_array:
+        if os.path.exists(file) == False:
+            os.mknod(file)
+
     mainTube()._initializeDb()
+    prepareLoggerConfig()
+
+def prepareLoggerConfig():
+    with open(LOGGER_CONFIG , 'w') as file:
+        file.write(logger_struct)
 
 def logInLocalFolder(project_id):
     # copy settings.json file in special place
