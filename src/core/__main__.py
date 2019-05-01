@@ -8,7 +8,7 @@ import sys
 
 def main():
         try:
-                from entry import main
+                from trivvy.src.core.entry import main
                 sys.exit(main())
         except KeyboardInterrupt:
                 sys.exit(0)

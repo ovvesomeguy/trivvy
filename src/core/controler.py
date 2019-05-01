@@ -1,8 +1,11 @@
+# This script prepare the project to start with making the local and global trivvy folder
+# and if the project database does not exists than make it
+
 import os
 from shutil import copyfile
 from trivvy.src.integrate.tuberegister import mainTube
-# This script prepare the project to start with making the local and global trivvy folder
-# and if the project database does not exists than make it
+import sys
+import json
 
 logger_struct = """[loggers]
 keys=root,exampleApp
@@ -47,10 +50,10 @@ SETINGS_ADDR = os.getcwd() + '/settings.json'
 PROJECTS_DATABASE_ADDR = GLOBAL_TRIVVY_FOLDER + 'projects.db'
 
 folder_array = [LOCAL_TRIVVY_FOLDER , GLOBAL_TRIVVY_FOLDER , LOGGER_FOLDER]
-files_array = [LOGGER_CONFIG , SETINGS_ADDR , PROJECTS_DATABASE_ADDR]
+files_array = [LOGGER_CONFIG , PROJECTS_DATABASE_ADDR]
 
 def prepareForStart():
-    # create the basic folders
+    # create the basic folders and files
     for folder in folder_array:
         if os.path.exists(folder) == False:
             os.mkdir(folder)
@@ -71,6 +74,15 @@ def logInLocalFolder(project_id):
     copyfile(SETINGS_ADDR , LOCAL_TRIVVY_FOLDER + 'copied.txt')
     with open(LOCAL_TRIVVY_FOLDER + 'id.txt' , 'w') as file:
         file.write(project_id)
+
+def createSettings():
+        if os.path.exists(SETINGS_ADDR) == False:
+                settings_struct = {'path': '.' , 'name':os.path.basename(os.getcwd()) , 'template': ''}
+                os.mknod(SETINGS_ADDR)
+                with open(SETINGS_ADDR, 'w') as file:
+                        file.write(json.dumps(settings_struct , indent=4))
+                        print('\033[32m' + 'The configuration file was create, just edit the settings.json file')
+                        sys.exit(0)
 
     
 def check_status():

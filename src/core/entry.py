@@ -1,20 +1,21 @@
-import argument_parser
-import controler
-import extend
-import template_engine
+import trivvy.src.core.argument_parser as argument_parser
+import trivvy.src.core.controler as controler
+import trivvy.src.core.extend as extend
+import trivvy.src.core.template_engine as template_engine
+import trivvy.src.core.reporter as reporter
 from trivvy.src.integrate.tuberegister import mainTube
 
 import time
 from uuid import uuid4
-import logger
 
 def main():
-
+    print('hey')
     controler.prepareForStart()
     consoleArgs = argument_parser.argumentParser().parseIt()
     projecId = uuid4()
-    logger.logg()
     if consoleArgs.action == 'start':
+        controler.createSettings()
+        reporter.report('| I`m started |')
         jsSettings = extend.parseSettings()
         engine = template_engine.templateExpander(jsSettings)
         engine.understandSettings()

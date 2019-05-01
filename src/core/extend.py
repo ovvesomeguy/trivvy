@@ -6,20 +6,8 @@
 import sys
 import os
 import json
-
-
-SETTINGS_PATH = os.getcwd() + '/settings.json'
     
-def createSettings():
-    if os.path.exists(SETTINGS_PATH):
-        pass
-    else:            
-        os.mknod(SETTINGS_PATH)
-        with open(SETTINGS_PATH, 'w') as file:
-            file.write('{\n    "path": "."\n}')
-            print('\033[32m' + 'The configuration file was create, just edit the settings.json file')
-            sys.exit(0)
-    
+SETINGS_ADDR = os.getcwd() + '/settings.json'
 
 def printWarning(attr):
     # CODES = ['NO_AUTHOR','NO_NAME','NO_PATH_TO_FILE','NO_TEMPLATE']
@@ -35,9 +23,8 @@ def printWarning(attr):
 
 
 def parseSettings():
-    # TODO append not necesary arguments: integrate , author
-    if os.path.exists(SETTINGS_PATH):
-        _jsonArgs = open(SETTINGS_PATH , 'r').read()
+    if os.path.exists(SETINGS_ADDR):        
+        _jsonArgs = open(SETINGS_ADDR , 'r').read()
         _jsData = json.loads(_jsonArgs)
 
         # if this options not set they will be auto replaced
@@ -54,6 +41,6 @@ def parseSettings():
         if not 'template' in _jsData:
             printWarning('template')
         return _jsData
-    
     else:
-        createSettings()
+        print('The settings file does not exists')
+        sys.exit(0)
