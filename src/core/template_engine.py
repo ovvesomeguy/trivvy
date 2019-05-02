@@ -69,8 +69,13 @@ class webTemplate():
         self.homeFolder = os.getcwd() + '/'
 
     def createElements(self):
-        self.folders = ['images' , 'src']
-        self.files = ['src/index.html' , 'src/style.css' , 'src/script.js' , 'README.md']
+        self.folders = ['images',
+                        'src']
+
+        self.files = ['src/index.html',
+                      'src/style.css',
+                      'src/script.js',
+                      'README.md']
 
         # create folders
         for folder in self.folders:
@@ -99,7 +104,10 @@ class pyTemplate():
     
     def createElements(self):
         self.folders = ['src/']
-        self.files = ['src/__init__.py' , 'src/__main__.py' , 'README.md']
+        self.files = ['src/__init__.py',
+                      'src/__main__.py',
+                      'README.md']
+                      
         for folder in self.folders:
             if os.path.exists(self.homeFolder + folder) == False:
                 os.mkdir(self.homeFolder + folder)
