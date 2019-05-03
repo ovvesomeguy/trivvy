@@ -1,4 +1,8 @@
-# Trivvy - tool for saving your time 
+<p align="center"> 
+    <span><img src='icons/logo.png'></img></span>
+</p>
+
+# Trivvy is a cool tool to save your time?
 Trivvy is project which helping you with creating your own projects using templates.
 
 # INSTALLATION
@@ -16,7 +20,7 @@ If settings.json does not exists, this comand will create him with basic content
     "template": ""
 }
 ```
-You need to change "template" property. Two templates are aviable from box:
+You need to change "template" property. Two templates are aviable just now:
 * python
 * web
 
@@ -52,7 +56,7 @@ README.md
 ```
 
 # Contributors
-* **Main developer** - [Guseynov Marat](https://github.com/parsifloor)
+* **Main developer** - [Really Cool Guy](https://github.com/parsifloor)
 
 # What next?
 In the near future, function to adding custom templates will be added.
