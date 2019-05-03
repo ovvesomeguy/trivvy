@@ -7,50 +7,17 @@ from trivvy.src.integrate.tuberegister import mainTube
 import sys
 import json
 
-logger_struct = """[loggers]
-keys=root,exampleApp
- 
-[handlers]
-keys=fileHandler, consoleHandler
- 
-[formatters]
-keys=myFormatter
- 
-[logger_root]
-level=CRITICAL
-handlers=consoleHandler
- 
-[logger_exampleApp]
-level=INFO
-handlers=fileHandler
-qualname=exampleApp
- 
-[handler_consoleHandler]
-class=StreamHandler
-level=DEBUG
-formatter=myFormatter
-args=(sys.stdout,)
- 
-[handler_fileHandler]
-class=FileHandler
-formatter=myFormatter
-args=("config.log",)
- 
-[formatter_myFormatter]
-format=%(asctime)s - %(name)s - %(levelname)s - %(message)s
-datefmt="""
 
 LOCAL_TRIVVY_FOLDER = os.getcwd() + '/.local_trivvy/'
 GLOBAL_TRIVVY_FOLDER = os.path.expanduser('~') + '/.trivvy/'
 LOGGER_FOLDER = GLOBAL_TRIVVY_FOLDER + 'logger/'
 
 
-LOGGER_CONFIG = LOGGER_FOLDER + 'logger.conf'
 SETINGS_ADDR = os.getcwd() + '/settings.json'
 PROJECTS_DATABASE_ADDR = GLOBAL_TRIVVY_FOLDER + 'projects.db'
 
 folder_array = [LOCAL_TRIVVY_FOLDER , GLOBAL_TRIVVY_FOLDER , LOGGER_FOLDER]
-files_array = [LOGGER_CONFIG , PROJECTS_DATABASE_ADDR]
+files_array = [PROJECTS_DATABASE_ADDR]
 
 def prepareForStart():
     # create the basic folders and files
@@ -63,11 +30,6 @@ def prepareForStart():
             os.mknod(file)
 
     mainTube()._initializeDb()
-    prepareLoggerConfig()
-
-def prepareLoggerConfig():
-    with open(LOGGER_CONFIG , 'w') as file:
-        file.write(logger_struct)
 
 def logInLocalFolder(project_id):
     # copy settings.json file in special place

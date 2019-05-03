@@ -17,13 +17,13 @@ def main():
     projecId = uuid4()
     if consoleArgs.action == 'start':
         controler.createSettings()
-        reporter.report('| I`m started |')
         jsSettings = extend.parseSettings()
         engine = template_engine.templateExpander(jsSettings)
         engine.understandSettings()
         if controler.check_status() == False:
             mainTube().addNewItem([jsSettings['name'] , time.strftime('%c') , jsSettings['template'] ,str(projecId)])
             controler.logInLocalFolder(str(projecId))
+            reporter.report('| I`m create the project |')
             print(color.GREEN + 'Creating was succssesful complete' + color.RESET)
         else:
             print(color.RED + 'Project just exists' + color.RESET)
@@ -32,7 +32,9 @@ def main():
         if controler.check_status() == True:
             mainTube().removeItem(controler.return_local_id())
             template_engine.removeAll()
+            reporter.report('| I`m delete a project |')
         else:
+            reporter.report('| Someone made a little mistake |')
             print(color.YELLOW + 'The project does not exists. Nothing to delete' + color.RESET)
     
     else:

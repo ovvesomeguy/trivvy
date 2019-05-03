@@ -8,7 +8,6 @@ import os
 import sys
 
 HOME_FOLDER = os.path.expanduser('~')
-CONFIG = HOME_FOLDER + '/.trivvy/logger/logger.conf'
 LOGGER = HOME_FOLDER + '/.trivvy/logger/logger.log'
 
 CONFIG_STRUCT = {
@@ -26,19 +25,15 @@ CONFIG_STRUCT = {
         }
     },
     "loggers": {
-        "trivvyLogger":{
+        "cuteLittlePanda":{
             "handlers": ["fileHandler"],
             "level": "INFO"
         }
     }
 }
 
-# degree 1 - info
-# degree 2 - debug
-# degree 3 - error
-# degree CRITICAL - it`s cool way to broke your pc
 
 def report(message):
     logging.config.dictConfig(CONFIG_STRUCT)
-    logger = logging.getLogger('trivvyLogger')
+    logger = logging.getLogger('cuteLittlePanda')
     logger.info(message)
