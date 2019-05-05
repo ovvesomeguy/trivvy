@@ -1,22 +1,15 @@
-# i made the dict logger config, cause the config from .conf file cant find the file in home folder/
-# the basic path to logging - the project folder , it`s not cool
-# P.S if  instrested i did it from first try
-
 import logging.config
 import logging
 import os
-import sys
 
-HOME_FOLDER = os.path.expanduser('~')
-LOGGER = HOME_FOLDER + '/.trivvy/logger/logger.log'
-
-CONFIG_STRUCT = {
+LOGGER_ADDR = os.getcwd() + '/.trivvy/logger/logger.log'
+LOGGER_STRUCT = {
     "version": 1,
     "handlers":{
         "fileHandler":{
             "class": "logging.FileHandler",
             "formatter": "myFormatter",
-            "filename": LOGGER
+            "filename": LOGGER_ADDR
         }
     },
     "formatters":{
@@ -31,9 +24,7 @@ CONFIG_STRUCT = {
         }
     }
 }
-
-
 def report(message):
-    logging.config.dictConfig(CONFIG_STRUCT)
+    logging.config.dictConfig(LOGGER_STRUCT)
     logger = logging.getLogger('cuteLittlePanda')
     logger.info(message)
