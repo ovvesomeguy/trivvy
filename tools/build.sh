@@ -1,18 +1,26 @@
 #!/bin/bash
 
 # delete symbolic link
-if [ -L '/usr/local/bin/trivvy' ]; then rm /usr/local/bin/trivvy; echo 'The symbilic link was deleted>'; fi
+if [ -L '/usr/bin/trivvy' ]
+then 
+    rm /usr/bin/trivvy; echo 'The symbilic link was deleted>' 
+fi
+
 # delete the project
-if [ -d '/usr/local/lib/python3.6/dist-packages/trivvy' ]; then rm -rf /usr/local/lib/python3.6/dist-packages/trivvy/; echo 'The folder was deleted>'; fi
-# write in log file update news
-# (date +%F_%H-%M-%S)
+if [ -d '/usr/lib/python3/dist-packages/trivvy' ]
+then
+    rm -rf /usr/lib/python3/dist-packages/trivvy/; echo 'The folder was deleted>' 
+else
+    mkdir /usr/lib/python3/dist-packages/trivvy/;
+fi
+
+
+cp -r $PWD /usr/lib/python3/dist-packages/
+ln -s /usr/lib/python3/dist-packages/trivvy/src/core/__main__.py /usr/bin/trivvy
+chmod 777 /usr/bin/trivvy
+
+echo '\033[32m Build was complete \033[0M'
 echo `date +%T:%D` "
  |---------------------|
  | I have been updated |
  |---------------------|">$HOME/.trivvy/logger/logger.log
-
-cp -r ~/trivvy/ /usr/local/lib/python3.6/dist-packages/
-ln -s /usr/local/lib/python3.6/dist-packages/trivvy/src/core/__main__.py /usr/local/bin/trivvy
-chmod 777 /usr/local/bin/trivvy
-
-echo '\033[32mBuild was complete\033[0M'

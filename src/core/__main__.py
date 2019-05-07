@@ -1,10 +1,10 @@
 #!/usr/bin/python3.6
 import sys
-import controller
-from color_changer import colors
-import reporter
-import expander
-import argument_parser
+import trivvy.src.core.controller as controller
+from trivvy.src.core.color_changer import colors
+import trivvy.src.core.reporter as reporter
+import trivvy.src.core.expander as expander
+import trivvy.src.core.argument_parser as argument_parser
 import subprocess
 
 def main():
@@ -19,5 +19,8 @@ def main():
         controller.removeAll()
         print(colors.RED + 'Okey, Your project was deleted.')
     
+    elif consoleArgs.action == 'create':
+        expander.createCustomTemplate()
+        
 if __name__ == "__main__":
     main()
