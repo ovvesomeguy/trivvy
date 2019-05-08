@@ -1,40 +1,48 @@
-from color_changer import colors
+from trivvy.src.core.color_changer import colors
 import trivvy.src.core.controller as controller
 from trivvy.src.core.controller import checkStatus
 import os
 import json
 import sys
-def __underStandCustomTemplate(fileAddres):
-        with open(fileAddres , 'r') as file:
-            fileContent = file.read()
-            jsonSerial = json.loads(fileContent)
-            return jsonSerial
 
-def findAllCustomTemplates():
-    allTemplates = []
-    for file in os.listdir(os.path.expanduser('~') + '/.trivvy/templates/'):
-        file = file.split('.')[0]
-        allTemplates.append(file)
-    return allTemplates
+class usersTemplate:
+    def __underStandCustomTemplate(self , fileAddres):
+            with open(fileAddres , 'r') as file:
+                fileContent = file.read()
+                jsonSerial = json.loads(fileContent)
+                return jsonSerial
 
-def createCustomTemplate():
-    templateName = input(colors.MAGENTA + 'Give name for your template: ')
-    if not templateName in findAllCustomTemplates():
-        pass
-    else:
-        print(colors.RED + 'Template with this name already exists' + colors.RESET)
-        sys.exit(0)
+    def findAllCustomTemplates(self):
+        allTemplates = []
+        for file in os.listdir(os.path.expanduser('~') + '/.trivvy/templates/'):
+            file = file.split('.')[0]
+            allTemplates.append(file)
+        return allTemplates
 
-    folders = input(colors.MAGENTA + 'All folders names with backslash: ').split()
-    files = input(colors.MAGENTA + 'All files: ').split()
-    customTemplateStruct = {'folder':folders , 'files':files}
-    jsonExemplar = json.dumps(customTemplateStruct , indent=4)
+    def createCustomTemplate(self):
+        templateName = input(colors.MAGENTA + 'Give name for your template: ')
+        if not templateName in self.findAllCustomTemplates():
+            pass
+        else:
+            print(colors.RED + 'Template with this name already exists' + colors.RESET)
+            sys.exit(0)
 
-    with open(os.path.expanduser('~') + '/.trivvy/templates/' + templateName + '.txt' , 'w') as file:
-        file.write(str(jsonExemplar))
+        folders = input(colors.MAGENTA + 'All folders names: ').split()
+        files = input(colors.MAGENTA + 'All files: ').split()
+        customTemplateStruct = {'folders':folders , 'files':files}
+        jsonExemplar = json.dumps(customTemplateStruct , indent=4)
 
-    print('Your template was created and now looking like that: ')
-    print(colors.GREEN + jsonExemplar + colors.RESET)
+        with open(os.path.expanduser('~') + '/.trivvy/templates/' + templateName + '.txt' , 'w') as file:
+            file.write(str(jsonExemplar))
+
+        print('Your template was created and now looking like that: ')
+        print(colors.GREEN + jsonExemplar + colors.RESET)
+
+    def expandCustomTemplate(self , template):
+        with open(template , 'r') as file:
+            jsonTemplate = json.loads(file.read())
+            print(jsonTemplate)
+            mainTemplate(jsonTemplate['folder'] , jsonTemplate['files']).createProject()
 
 class awesomeUnderstander:
     def __init__(self, json):
@@ -50,6 +58,7 @@ class awesomeUnderstander:
         # TODO some database of all templates
         else:
             pass
+
 class mainTemplate():
     def __init__(self , folders , files):
         self.__filesToCreate = files
@@ -89,4 +98,4 @@ class webTemplate(mainTemplate):
         self.__foldersToCreate = ['src/' , 'images/']
         super().__init__(self.__foldersToCreate , self.__filesToCreate)
 
-findAllCustomTemplates()
+expandCustomTemplate(os.path.expanduser('~') + '/.trivvy/templates/testTemplate.txt')
