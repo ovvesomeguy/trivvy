@@ -1,14 +1,22 @@
+"""
+    This file is responsible for parsing command line arguments.
+    Class consoleParser will return all arguments, besides --version and --help flag
+    If -v flag added, this file will print current version of trivvy
+"""
+
 import argparse
 import sys
-from color_changer import colors
-from __init__ import __version__
+from trivvy.src.core.color_changer import colors
+from trivvy.src.core.__init__ import __version__
 
-def print_help():
-    print(colors.YELLOW + 'Ohh men... Just add some arguments or read help, by typing trivvy --help')
-    sys.exit(0)
 class consoleParser:
     def __init__(self):
         self.parser = argparse.ArgumentParser(usage="Usage" , description='Decription')
+    
+    def print_help(self):
+        print(colors.YELLOW + 'Ohh men... Just add some arguments or read help, by typing trivvy --help')
+        sys.exit(0)
+
     def parseIT(self):
         self.parser.add_argument(
                                 'action',
@@ -24,6 +32,6 @@ class consoleParser:
         if args.version == True:
             print(__version__)
         if len(sys.argv) == 1:
-            print_help()
+            self.print_help()
         else:
             return args

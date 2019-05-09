@@ -10,17 +10,16 @@ import subprocess
 def main():
     consoleArgs = argument_parser.consoleParser().parseIT()
     if consoleArgs.action == 'start':
-        controller.createSettings() # this function will create settings if the are not exists
+        controller.createSettings()
         settings = controller.parseJsonSettings()
         expander.awesomeUnderstander(settings)
-        sys.exit(0)
-    
+        sys.exit(0)            
     elif consoleArgs.action == 'delete':
         controller.removeAll()
         print(colors.RED + 'Okey, Your project was deleted.')
     
     elif consoleArgs.action == 'create':
-        expander.createCustomTemplate()
+        expander.usersTemplate().createCustomTemplate()
         
 if __name__ == "__main__":
     main()

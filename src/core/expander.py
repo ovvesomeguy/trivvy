@@ -1,27 +1,41 @@
-from trivvy.src.core.color_changer import colors
-import trivvy.src.core.controller as controller
-from trivvy.src.core.controller import checkStatus
-import os
+"""
+    This is core of module.
+    Class 'awesomeUnderstander' will parse settings.json file and decide what to do.
+    All classes, must be inerit by mainTemplate. mainTemplate - basic class with basic functions.
+    He have 2 arguments. First is folders to setup, second if files.
+"""
+
+
 import json
+import os
 import sys
+from pathlib import Path
+
+import trivvy.src.core.controller as controller
+from trivvy.src.core.color_changer import colors
+from trivvy.src.core.controller import checkStatus
 
 class usersTemplate:
-    def __underStandCustomTemplate(self , fileAddres):
-            with open(fileAddres , 'r') as file:
+    def __underStandCustomTemplate(self , templateAddr):
+            with open(templateAddr , 'r') as file:
                 fileContent = file.read()
                 jsonSerial = json.loads(fileContent)
                 return jsonSerial
 
-    def findAllCustomTemplates(self):
-        allTemplates = []
+    def findCustomTemplates(self , name):
         for file in os.listdir(os.path.expanduser('~') + '/.trivvy/templates/'):
-            file = file.split('.')[0]
-            allTemplates.append(file)
-        return allTemplates
+            if file.split('.')[0] == name:
+                return os.path.expanduser('~') + '/.trivvy/templates/' + file
+    
+    def allUserTemplate(self):
+        result = []
+        for file in os.listdir(os.path.expanduser('~') + '/.trivvy/templates/'):
+            result.append(file.split('.')[0])
+        return result
 
     def createCustomTemplate(self):
         templateName = input(colors.MAGENTA + 'Give name for your template: ')
-        if not templateName in self.findAllCustomTemplates():
+        if not templateName in self.allUserTemplate():
             pass
         else:
             print(colors.RED + 'Template with this name already exists' + colors.RESET)
@@ -44,6 +58,7 @@ class usersTemplate:
             print(jsonTemplate)
             mainTemplate(jsonTemplate['folder'] , jsonTemplate['files']).createProject()
 
+
 class awesomeUnderstander:
     def __init__(self, json):
         self.json = json
@@ -55,9 +70,8 @@ class awesomeUnderstander:
         elif self.json['template'] == 'web':
             webTemplate().createProject()
 
-        # TODO some database of all templates
         else:
-            pass
+            usersTemplate().expandCustomTemplate(str(usersTemplate().findCustomTemplates(self.json['template'])))
 
 class mainTemplate():
     def __init__(self , folders , files):
@@ -98,4 +112,3 @@ class webTemplate(mainTemplate):
         self.__foldersToCreate = ['src/' , 'images/']
         super().__init__(self.__foldersToCreate , self.__filesToCreate)
 
-expandCustomTemplate(os.path.expanduser('~') + '/.trivvy/templates/testTemplate.txt')

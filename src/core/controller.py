@@ -3,7 +3,7 @@ import os
 import json
 import shutil
 import json
-from color_changer import colors
+from trivvy.src.core.color_changer import colors
 from getpass import getuser
 
 USER_HOME = os.path.expanduser('~') + '/'
@@ -77,5 +77,6 @@ def createSettings():
         jsonProjectStruct = {'path':'.' , 'name': os.path.basename(os.getcwd()) , 'template': ''}
         with open(SETTINGS_JSON, 'w') as file:
             file.write(str(json.dumps(jsonProjectStruct , indent=4)))
+        sys.exit(0)
     else:
         pass
