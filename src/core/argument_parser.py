@@ -8,6 +8,8 @@ import argparse
 import sys
 from trivvy.src.core.color_changer import colors
 from trivvy.src.core.__init__ import __version__
+from trivvy.src.core.expander import usersTemplate
+import shutil
 
 class consoleParser:
     def __init__(self):
@@ -27,10 +29,23 @@ class consoleParser:
                                 '--version',
                                 action='store_true',
                                 help='Dislay the current version of product')
-
+        self.parser.add_argument(
+                                '-t',
+                                '--templates',
+                                action='store_true',
+                                help='Show all your templates',
+        )
         args = self.parser.parse_args()
+        print(args)
         if args.version == True:
             print(__version__)
+        if args.templates:
+            phraseLength = len('All your templates man')
+            countOfFallbackToCenter = int((shutil.get_terminal_size().columns - phraseLength)/2) - 1
+            print(colors.GREEN + '|' + '-'*countOfFallbackToCenter + 'All tour templates man' + '-'*countOfFallbackToCenter + '|' + colors.RESET)
+            for template in usersTemplate().allUserTemplate():
+                print(colors.YELLOW + '|' + ' '*countOfFallbackToCenter + template + ' '*countOfFallbackToCenter + colors.RESET)
+            print(colors.GREEN + '-'* shutil.get_terminal_size().columns + colors.RESET)
         if len(sys.argv) == 1:
             self.print_help()
         else:
