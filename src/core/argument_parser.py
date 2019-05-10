@@ -36,7 +36,6 @@ class consoleParser:
                                 help='Show all your templates',
         )
         args = self.parser.parse_args()
-        print(args)
         if args.version == True:
             print(__version__)
         if args.templates:
