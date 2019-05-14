@@ -1,58 +1,80 @@
 import shutil
 import sys
 
-class outputFormatter():
-    def __init__(self, message , color='' , marker=' ' , start='' , end='' , bold = False):
-        self.userColor = color
-        if len(self.userColor) == 0:
-            self.currentColor = '\033[37m'
-        else:
-            if self.userColor in self.colorsArray:
-                self.currentColor = self.colorsArray[self.userColor]
-            else:
-                print('Key Error: This color does not found')
-                sys.exit()
-        self.bold = bold
-        self.message = message
-        self.marker = marker
-        self.start = start
-        self.end = end
-        self.main()
+class myException(Exception):
+    def __init__(self , text):
+        pass
 
+# message - array of lines
+class consolePrettier:
+    """List of aviable colors
+<-- green -->,
+<-- red -->,
+<-- white-- >,
+<-- yellow -->,
+<-- blue -->,
+<-- cyan -->,
+<-- magenta -->"""
     colorsArray = {
         'red': '\033[31m',
         'green': '\033[32m',
         'yellow': '\033[33m',
-        'blue': '\033[34M',
-        'white': '\033[37M',
-        'cyan': '\033[36m',
+        'blue': '\033[34m',
         'magenta': '\033[35m',
+        'cyan': '\033[36m',
+        'white': '\033[37m',
     }
+ 
 
-    def main(self):
-        print(self.changeColor(self.center()))
+    def __init__(self, options , box=None):
+        self._boxSet = box
+        self.options = options
+        self.formatOutput(self.__formatOptions())
 
-    def changeColor(self , message):
-        if self.bold == True:
-            return '\033[1m'  + self.currentColor + message + '\033[0M'
-        else:
-            return  self.currentColor + message + '\033[0M'
+    def __formatOptions(self):
+        self.__formatedOptions = []
+        if self._boxSet != None:
+            for box_option in self.options:
+                box_option['start'] = '|'
+                box_option['end'] = '|'
+                box_option['marker'] = self._boxSet['marker']
+                box_option['color'] = self._boxSet['color']
+        for option in self.options:
+            if not 'message' in option:
+                option['message'] = ''
+            if not 'start' in option:
+                option['start'] = ''
+            if not 'end' in option:
+                option['end'] = ''
 
-    def center(self):
-        _terminalSize = shutil.get_terminal_size()
-        _allCountOfIndent = _terminalSize.columns - len(self.message) - len(self.start + self.end)
-        countIndentForOneSide = int(_allCountOfIndent / 2)
-        if len(self.marker) is not 0:
-            currentCount = int(countIndentForOneSide / len(self.marker))
-        else:
-            sys.exit()
-        # return message without changing color
-        return str(self.start + currentCount*self.marker + self.message + currentCount*self.marker + self.end)
-
-outputFormatter('Very very long centered message, really long', 
-                color='magenta', 
-                marker='-', 
-                start='/',
-                end='\\',
-                bold=True
-)
+            if not 'bold' in option:
+                option['bold'] = ''
+            elif option['bold'] == True:
+                option['bold'] = '\033[1m'
+            
+            if not 'marker' in option:
+                option['marker'] = ''
+            elif option['marker'] == 'center':
+                option['marker'] = ' '
+            if not 'color' in option:
+                option['color'] = 'white'
+            self.__formatedOptions.append(option)
+        return self.__formatedOptions
+    
+    def formatOutput(self , formated_list_of_options):
+        for _ in formated_list_of_options:
+            terminalSize = shutil.get_terminal_size().columns
+            columnsCount = terminalSize - len(list(_['message'])) - len(_['start']) - len(_['end']) - len(_['marker'])
+            indents = columnsCount / 2
+            _message_for_print = _['start'] + int(indents) * _['marker'] + _['message'] + int(indents) * _['marker'] + _['end']
+            indentsOffset = terminalSize - len(_message_for_print)
+            print(
+               self.colorsArray[_['color']]+
+                _['bold']+
+                _['start']+
+                int(indents) * _['marker']+
+                _['message']+
+                int(indents + indentsOffset) * _['marker']+
+                _['end']+
+                '\033[0m'
+                )
