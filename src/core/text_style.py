@@ -5,16 +5,8 @@ class myException(Exception):
     def __init__(self , text):
         pass
 
-# message - array of lines
 class consolePrettier:
-    """List of aviable colors
-<-- green -->,
-<-- red -->,
-<-- white-- >,
-<-- yellow -->,
-<-- blue -->,
-<-- cyan -->,
-<-- magenta -->"""
+    """List of aviable colors red , green , white , yellow   blue , cyan , magenta"""
     colorsArray = {
         'red': '\033[31m',
         'green': '\033[32m',
@@ -24,57 +16,48 @@ class consolePrettier:
         'cyan': '\033[36m',
         'white': '\033[37m',
     }
- 
 
-    def __init__(self, options , box=None):
-        self._boxSet = box
-        self.options = options
-        self.formatOutput(self.__formatOptions())
-
-    def __formatOptions(self):
-        self.__formatedOptions = []
-        if self._boxSet != None:
-            for box_option in self.options:
-                box_option['start'] = '|'
-                box_option['end'] = '|'
-                box_option['marker'] = self._boxSet['marker']
-                box_option['color'] = self._boxSet['color']
-        for option in self.options:
-            if not 'message' in option:
-                option['message'] = ''
-            if not 'start' in option:
-                option['start'] = ''
-            if not 'end' in option:
-                option['end'] = ''
-
-            if not 'bold' in option:
-                option['bold'] = ''
-            elif option['bold'] == True:
-                option['bold'] = '\033[1m'
-            
-            if not 'marker' in option:
-                option['marker'] = ''
-            elif option['marker'] == 'center':
-                option['marker'] = ' '
-            if not 'color' in option:
-                option['color'] = 'white'
-            self.__formatedOptions.append(option)
-        return self.__formatedOptions
+    def __init__(self , options=None):
+        self.terminalWidth = shutil.get_terminal_size().columns
+        self.__magicCheck(options)
     
-    def formatOutput(self , formated_list_of_options):
-        for _ in formated_list_of_options:
-            terminalSize = shutil.get_terminal_size().columns
-            columnsCount = terminalSize - len(list(_['message'])) - len(_['start']) - len(_['end']) - len(_['marker'])
-            indents = columnsCount / 2
-            _message_for_print = _['start'] + int(indents) * _['marker'] + _['message'] + int(indents) * _['marker'] + _['end']
-            indentsOffset = terminalSize - len(_message_for_print)
-            print(
-               self.colorsArray[_['color']]+
-                _['bold']+
-                _['start']+
-                int(indents) * _['marker']+
-                _['message']+
-                int(indents + indentsOffset) * _['marker']+
-                _['end']+
-                '\033[0m'
-                )
+    def __magicCheck(self , user_settings):
+        if 'lay' in user_settings[0]:
+            self.layout = user_settings[0]['lay']
+            self.layout_color = user_settings[0]['box-color']
+            self.box_header = user_settings[0]['header']
+            self.header_color = user_settings[0]['header-color']
+            self.inBox(user_settings[1:] , header=self.box_header , box_color=self.layout_color , header_color=self.header_color)
+
+    def countIndents(self , startLen=0 , endLen=0 , messageLen=0):
+        aviableIndents = self.terminalWidth - startLen - endLen - messageLen
+        leftIndents = int(aviableIndents / 2)
+        indentsOffset = aviableIndents - leftIndents*2
+        return {'left': leftIndents , 'right': leftIndents + indentsOffset}        
+
+    def inBox(self , messages , header='' , box_color='white' , header_color = 'white'):
+        currentIndents = self.countIndents(1 , 1 , len(list(header)))
+        print(self.colorsArray[box_color]+ 
+            '|' 
+            + currentIndents['left']*'-' + 
+            self.colorsArray[header_color] + header + self.colorsArray[box_color] + 
+            '-'*currentIndents['right'] + 
+            '|'+
+            '\033[0m')
+        for _ in messages:
+            margin = self.countIndents(messageLen=len(_['message']))
+            print(self.colorsArray[box_color] + '|' + '\033[0m'+ (margin['left']-1)*' ' + _['message'] + (margin['right']-1)*' ' + self.colorsArray[box_color] + '|' + '\033[0m')
+        print(self.colorsArray[box_color] + '|' + '-'*(self.terminalWidth-2) + '|' + '\033[0m')
+    
+
+consolePrettier(options=[
+    {'lay': 'box', 
+     'box-color': 'yellow', 
+     'header': 'Header here',
+     'header-color': 'green'
+    },
+    {'message': 'first world'},
+    {'message': 'second mesage'},
+    {'message': 'third message'},
+    {'message': 'Some really long message'}
+])
